@@ -1,7 +1,7 @@
 # Information-Extraction-from-Medical-Transactions
 Specific information extraction using public medical dataset on kaggle
 
-Target identification:
+### Target identification:
 * Gender
 * Age
 * Treatment
@@ -16,5 +16,5 @@ Treatment:
 3. multi-label training using transcription and keywords based on the pre-trained model BERT (not yet completed, bugs exist)
 
 
-Reference:
+### Reference:
 Pre-trained biomedical ner model: https://huggingface.co/d4data/biomedical-ner-all
