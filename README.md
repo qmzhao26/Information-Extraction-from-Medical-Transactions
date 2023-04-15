@@ -1,6 +1,10 @@
 # Information-Extraction-from-Medical-Transactions
 Specific information extraction using public medical dataset on kaggle
 
+### Dataset
+Public dataset Medical Transcriptions: https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions?resource=download
+
+
 ### Target identification:
 * Gender
 * Age
@@ -14,6 +18,16 @@ Treatment:
 1. traditional NER
 2. pre-trained model based on bert's medical specialization to extract NER and match words with entity types A and B
 3. multi-label training using transcription and keywords based on the pre-trained model BERT (not yet completed, bugs exist)
+
+### Results
+The results are saved in csv file "mtsamples_results.csv":
+gender: df['gender']
+age: df['age']
+treatment: 
+  1. 'treatment_trip'      200 non-null    object
+  2. 'treatment_ngram'     200 non-null    object
+  3. 'treatment_wd'     200 non-null    object
+  4. 'treatment_medi'  SVO triplets using pre-trained biomedical ner model (based on BERT)
 
 
 ### Reference:
