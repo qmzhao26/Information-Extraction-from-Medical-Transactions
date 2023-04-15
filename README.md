@@ -24,10 +24,10 @@ The results are saved in csv file "mtsamples_results.csv":
 gender: df['gender']
 age: df['age']
 treatment: 
-  1. 'treatment_trip'      200 non-null    object
-  2. 'treatment_ngram'     200 non-null    object
-  3. 'treatment_wd'     200 non-null    object
-  4. 'treatment_medi'  SVO triplets using pre-trained biomedical ner model (based on BERT)
+  1. 'treatment_ngram':  Use the pre-training model 'paraphrase-MiniLM-L6-v2' to get the embedding, and then use the n=gram method to extract the phrases (words) with the highest correlation
+  2. 'treatment_wd': Use the pre-training model 'en_core_web_sm' to get the embedding, and then use the top-ranked method to extract the words with the highest association
+  3. 'treatment_trip': SVO triplets extracted manually on the basis of NER obtained from the pre-training model 'en_core_web_sm'
+  4. 'treatment_medi': SVO triplets using pre-trained biomedical ner model (based on BERT)
 
 
 ### Reference:
