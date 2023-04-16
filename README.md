@@ -16,7 +16,7 @@ Age:
   in the description and transcription fields, use regular expressions to match descriptions that contain 'year'  
 Treatment:
 1. traditional NER
-2. pre-trained model based on bert's medical specialization to extract NER and match words with entity types A and B
+2. pre-trained model based on bert's medical specialization to extract NER and match words with entity types 'Therapeutic_procedure' and 'Medician'
 3. multi-label training using transcription and keywords based on the pre-trained model BERT. A simple three-layer network is constructed, with the first layer being the pre-trained BERT
 
 ### Results
