@@ -30,7 +30,7 @@ In Google Drive: https://drive.google.com/file/d/1-LKFZH4wLBhZyswkga-xUREWeZ8Lph
   2. 'treatment_wd': Use the textranked method to extract the words with the highest association in "transaction"
   3. 'treatment_trip': SVO triplets extracted manually on the basis of NER obtained from the pre-training model 'en_core_web_sm'
   4. 'treatment_medi': SVO triplets using pre-trained biomedical ner model (based on BERT)
-  5. BERT-based multi-label classification result saved in csv file "mtsamples_classify.csv", The 'classification' field stores all labels with predicted outcomes greater than 0.95. **Note:** Due to memory limitations only 128 transcription values are currently used for multi-label prediction, and the results are saved in "mtsamples_classify.csv"  (Only 500 data have been trained with 3 epochs so far)
+  5. BERT-based multi-label classification result saved in csv file "mtsamples_classify.csv", The 'classification' field stores all labels with predicted outcomes greater than 0.95. **Note:** Due to memory limitations only 128 transcription values are currently used for multi-label prediction, and the results are saved in "mtsamples_classify.csv"  (Only trained with 3 epochs, time spent 319s)
 
 
 ### Reference:
