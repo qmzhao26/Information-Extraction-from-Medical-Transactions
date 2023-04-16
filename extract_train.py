@@ -24,8 +24,8 @@ device = "cuda:0" if torch.cuda.is_available() else "cpu"
 root_path = 'D:/A Course/interview/archive/'
 addr = root_path + "mtsamples_added_target.csv"
 df = pd.read_csv(addr)
-df = df[df['transcription'].notna()]
-df = df[:500]
+# df = df[df['transcription'].notna()]
+df = df[:1000]
 
 
 
@@ -59,8 +59,8 @@ print("TEST Dataset: {}".format(valid_dataset.shape))
 training_set = CustomDataset(train_dataset, tokenizer, MAX_LEN)
 validation_set = CustomDataset(valid_dataset, tokenizer, MAX_LEN)
 
-test = training_set.__getitem__(10)
-print(test, test['targets'].reshape(-1, 1).shape)
+# test = training_set.__getitem__(10)
+# print(test, test['targets'].reshape(-1, 1).shape)
  
 model = BERTClass()
 model.to(device)
@@ -89,6 +89,3 @@ t3 = time.time()
 trained_model = train_model(1, 3, np.Inf, training_loader, validation_loader, model, 
                        optimizer,checkpoint_path,best_model)
 print('time for train:',time.time()-t3)
-
-# predict 
-trained_model

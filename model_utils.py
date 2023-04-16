@@ -65,8 +65,8 @@ class BERTClass(torch.nn.Module):
         self.l3 = torch.nn.Linear(768, 10390)
 
     def forward(self, ids, mask, token_type_ids):
-        output_1 = self.l1(ids, attention_mask=mask, token_type_ids=token_type_ids)
-        print('wft???',type(output_1), output_1)
+        output_1 = self.l1(ids, attention_mask=mask,
+                           token_type_ids=token_type_ids)
         output_2 = self.l2(output_1.pooler_output)
         output = self.l3(output_2)
         return output
@@ -75,16 +75,12 @@ class BERTClass(torch.nn.Module):
 def loss_fn(outputs, targets):
     return torch.nn.BCEWithLogitsLoss()(outputs, targets)
 
-val_targets=[]
-val_outputs=[] 
+
+val_targets = []
+val_outputs = []
+
 
 def load_ckp(checkpoint_fpath, model, optimizer):
-    """
-    checkpoint_path: path to save checkpoint
-    model: model that we want to load checkpoint parameters into       
-    optimizer: optimizer we defined in previous training
-
-    """
     # load check point
     checkpoint = torch.load(checkpoint_fpath)
     # initialize state_dict from checkpoint to model
@@ -94,16 +90,10 @@ def load_ckp(checkpoint_fpath, model, optimizer):
     # initialize valid_loss_min from checkpoint to valid_loss_min
     valid_loss_min = checkpoint['valid_loss_min']
     # return model, optimizer, epoch value, min validation loss
-    return model, optimizer, checkpoint['epoch'], valid_loss_min.item()
+    return model, optimizer, checkpoint['epoch'], valid_loss_min
 
 
 def save_ckp(state, is_best, checkpoint_path, best_model_path):
-    """
-    state: checkpoint we want to save
-    is_best: is this the best checkpoint; min validation loss
-    checkpoint_path: path to save checkpoint
-    best_model_path: path to save best model
-    """
     f_path = checkpoint_path
     # save checkpoint data to the path given, checkpoint_path
     torch.save(state, f_path)
@@ -132,7 +122,8 @@ def train_model(start_epochs,  n_epochs, valid_loss_min_input,
             token_type_ids = data['token_type_ids'].to(
                 device, dtype=torch.long)
             targets = data['targets'].to(device, dtype=torch.float)
-            print("data in line 134", ids.shape, mask.shape, token_type_ids.shape, targets.shape)
+            print("data in line 134", ids.shape, mask.shape,
+                  token_type_ids.shape, targets.shape)
             outputs = model(ids, mask, token_type_ids)
             optimizer.zero_grad()
             loss = loss_fn(outputs, targets)
@@ -197,3 +188,19 @@ def train_model(start_epochs,  n_epochs, valid_loss_min_input,
                 valid_loss_min = valid_loss
         print('############# Epoch {}  Done   #############\n'.format(epoch))
     return model
+
+
+def predict(model, input_loader):
+    thres = torch.nn.Threshold(0.9, 0)
+    predictions = []
+    for idx, data in enumerate(input_loader):
+            #print('yyy epoch', batch_idx)
+        ids = data['ids'].to(device, dtype=torch.long)
+        mask = data['mask'].to(device, dtype=torch.long)
+        token_type_ids = data['token_type_ids'].to(
+            device, dtype=torch.long)
+        outputs = model(ids, mask, token_type_ids)
+        outputs = thres(outputs)
+        outputs_list = outputs.cpu().detach().numpy().tolist()
+        predictions.extend(outputs_list)
+    return predictions
