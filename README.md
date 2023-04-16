@@ -20,8 +20,8 @@ Treatment:
 3. multi-label training using transcription and keywords based on the pre-trained model BERT. A simple three-layer network is constructed, with the first layer being the pre-trained BERT
 
 ### Results
-The results are saved in csv file "mtsamples_results.csv" :
-Resulting files in Google Drive: https://drive.google.com/file/d/1-LKFZH4wLBhZyswkga-xUREWeZ8Lph3t/view?usp=sharing
+Partial results are saved in csv file "mtsamples_results.csv" :
+In Google Drive: https://drive.google.com/file/d/1-LKFZH4wLBhZyswkga-xUREWeZ8Lph3t/view?usp=sharing (60.7M)  
 
 **gender**: 'gender' column  
 **age**: 'age' column  
