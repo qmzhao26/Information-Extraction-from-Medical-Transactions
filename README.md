@@ -17,7 +17,7 @@ Age:
 Treatment:
 1. traditional NER
 2. pre-trained model based on bert's medical specialization to extract NER and match words with entity types A and B
-3. multi-label training using transcription and keywords based on the pre-trained model BERT (not yet completed, bugs exist)
+3. multi-label training using transcription and keywords based on the pre-trained model BERT. A simple three-layer network is constructed, with the first layer being the pre-trained BERT
 
 ### Results
 The results are saved in csv file "mtsamples_results.csv" :
