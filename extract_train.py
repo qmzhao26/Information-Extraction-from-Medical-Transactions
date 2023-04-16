@@ -10,7 +10,7 @@ from transformers import BertModel
 import torch
 from torch.utils.data import Dataset
 
-from interview_extract_model_utils import *
+from model_utils import *
 
 MAX_LEN = 16
 TRAIN_BATCH_SIZE = 32
