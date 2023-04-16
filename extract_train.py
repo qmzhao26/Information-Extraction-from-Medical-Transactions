@@ -8,7 +8,7 @@ from transformers import BertTokenizer, BertConfig, BertForMaskedLM, BertForNext
 from transformers import BertModel
 
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 
 from model_utils import *
 
@@ -21,11 +21,11 @@ tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
-
-addr = "D:/A Course/interview/archive/mtsamples_added_target.csv"
+root_path = 'D:/A Course/interview/archive/'
+addr = root_path + "mtsamples_added_target.csv"
 df = pd.read_csv(addr)
 df = df[df['transcription'].notna()]
-df = df[:200]
+df = df[:500]
 
 
 
@@ -40,9 +40,14 @@ print(type(df.at[0, 'target_list']))
 # print(df.at[200, 'target_list'])
 
     
+train_size = 0.9
+input_dataset = df.sample(frac=train_size,random_state=200)
+test_dataset = df.drop(input_dataset.index).reset_index(drop=True)
+input_dataset = input_dataset.reset_index(drop=True)
+
 train_size = 0.8
-train_dataset = df.sample(frac=train_size,random_state=200)
-valid_dataset = df.drop(train_dataset.index).reset_index(drop=True)
+train_dataset = input_dataset.sample(frac=train_size,random_state=200)
+valid_dataset = input_dataset.drop(train_dataset.index).reset_index(drop=True)
 train_dataset = train_dataset.reset_index(drop=True)
 
 
@@ -63,9 +68,27 @@ model.to(device)
  
 optimizer = torch.optim.Adam(params =  model.parameters(), lr=LEARNING_RATE)
 
-checkpoint_path = 'checkpoint/current_checkpoint.pt'
+checkpoint_path = root_path+'checkpoint/current_checkpoint.pt'
  
-best_model = 'best_model/best_model.pt'
- 
-trained_model = train_model(1, 4, np.Inf, training_set, validation_set, model, 
+best_model = root_path+'best_model/best_model.pt'
+
+train_params = {'batch_size': TRAIN_BATCH_SIZE,
+                'shuffle': True,
+                'num_workers': 0
+                }
+
+test_params = {'batch_size': VALID_BATCH_SIZE,
+                'shuffle': False,
+                'num_workers': 0
+                }
+
+training_loader = DataLoader(training_set, **train_params)
+validation_loader = DataLoader(validation_set, **test_params)
+
+t3 = time.time()
+trained_model = train_model(1, 3, np.Inf, training_loader, validation_loader, model, 
                        optimizer,checkpoint_path,best_model)
+print('time for train:',time.time()-t3)
+
+# predict 
+trained_model

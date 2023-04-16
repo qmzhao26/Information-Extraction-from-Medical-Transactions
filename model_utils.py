@@ -62,11 +62,12 @@ class BERTClass(torch.nn.Module):
         super(BERTClass, self).__init__()
         self.l1 = transformers.BertModel.from_pretrained('bert-base-uncased')
         self.l2 = torch.nn.Dropout(0.3)
-        self.l3 = torch.nn.Linear(768, 6)
+        self.l3 = torch.nn.Linear(768, 10390)
 
     def forward(self, ids, mask, token_type_ids):
-        _, output_1 = self.l1(ids, attention_mask=mask, token_type_ids=token_type_ids)
-        output_2 = self.l2(output_1)
+        output_1 = self.l1(ids, attention_mask=mask, token_type_ids=token_type_ids)
+        print('wft???',type(output_1), output_1)
+        output_2 = self.l2(output_1.pooler_output)
         output = self.l3(output_2)
         return output
 
@@ -131,6 +132,7 @@ def train_model(start_epochs,  n_epochs, valid_loss_min_input,
             token_type_ids = data['token_type_ids'].to(
                 device, dtype=torch.long)
             targets = data['targets'].to(device, dtype=torch.float)
+            print("data in line 134", ids.shape, mask.shape, token_type_ids.shape, targets.shape)
             outputs = model(ids, mask, token_type_ids)
             optimizer.zero_grad()
             loss = loss_fn(outputs, targets)
